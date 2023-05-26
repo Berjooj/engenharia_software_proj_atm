@@ -1,27 +1,29 @@
 -- Diagrama de classe
 -- SQL do banco
 
-CREATE TABLE IF NOT EXISTS campus(
+CREATE SCHEMA matriculas;
+
+CREATE TABLE IF NOT EXISTS matriculas.campus(
 	id BIGINT NOT NULL UNIQUE,
 	nome VARCHAR(100) NOT NULL,
 	endereco VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS predios(
+CREATE TABLE IF NOT EXISTS matriculas.predios(
 	id BIGINT NOT NULL UNIQUE,
 	nome VARCHAR(100) NOT NULL,
 	id_campus BIGINT NOT NULL,
 	qtd_andares INT NOT NULL DEFAULT 1
 );
 
-CREATE TABLE IF NOT EXISTS salas(
+CREATE TABLE IF NOT EXISTS matriculas.salas(
 	id BIGINT NOT NULL UNIQUE,
 	nome VARCHAR(100) NOT NULL,
 	id_predio BIGINT NOT NULL,
 	capacidade INT NOT NULL DEFAULT 1
 );
 
-CREATE TABLE IF NOT EXISTS usuario(
+CREATE TABLE IF NOT EXISTS matriculas.usuarios(
 	id BIGINT NOT NULL UNIQUE,
 	nome VARCHAR(100) NOT NULL,
 	cpf VARCHAR(100) NOT NULL UNIQUE,
@@ -32,31 +34,31 @@ CREATE TABLE IF NOT EXISTS usuario(
 	is_professor BOOLEAN NOT NULL DEFAULT FALSE
 );
 
-CREATE TABLE IF NOT EXISTS conteudo_curricular(
+CREATE TABLE IF NOT EXISTS matriculas.conteudos_curriculares(
 	id BIGINT NOT NULL UNIQUE,
 	titulo VARCHAR(100) NOT NULL,
 	descricao TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS planos_curriculares(
+CREATE TABLE IF NOT EXISTS matriculas.planos_curriculares(
 	id BIGINT NOT NULL UNIQUE,
 	titulo VARCHAR(100) NOT NULL,
 	descricao TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS conteudo_plano_curricular(
+CREATE TABLE IF NOT EXISTS matriculas.conteudo_plano_curricular(
 	id_conteudo_curricular BIGINT NOT NULL,
 	id_plano_curricular BIGINT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS unidade_curricular(
+CREATE TABLE IF NOT EXISTS matriculas.unidades_curriculares(
 	id BIGINT NOT NULL UNIQUE,
 	nome VARCHAR(100) NOT NULL,
 	carga_horaria INT NOT NULL DEFAULT 0,
 	id_plano_curricular BIGINT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS turmas(
+CREATE TABLE IF NOT EXISTS matriculas.turmas(
 	id BIGINT NOT NULL UNIQUE,
 	nome VARCHAR(100) NOT NULL,
 	id_unidade_curricular BIGINT NOT NULL,
@@ -66,12 +68,12 @@ CREATE TABLE IF NOT EXISTS turmas(
 	hora_fim INT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS sala_turma(
+CREATE TABLE IF NOT EXISTS matriculas.sala_turma(
 	id_sala BIGINT NOT NULL,
 	id_turma BIGINT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS matriculas(
+CREATE TABLE IF NOT EXISTS matriculas.matriculas(
 	id BIGINT NOT NULL UNIQUE,
 	id_usuario BIGINT NOT NULL,
 	id_turma BIGINT NOT NULL,
@@ -86,99 +88,99 @@ CREATE TABLE IF NOT EXISTS matriculas(
 	semestre INT NOT NULL
 );
 
-CREATE SEQUENCE IF NOT EXISTS campus_seq
+CREATE SEQUENCE IF NOT EXISTS matriculas.campus_seq
 	START WITH 1
 	INCREMENT BY 1
 	NO MINVALUE
 	NO MAXVALUE
 	CACHE 1;
 
-CREATE SEQUENCE IF NOT EXISTS predios_seq
+CREATE SEQUENCE IF NOT EXISTS matriculas.predios_seq
 	START WITH 1
 	INCREMENT BY 1
 	NO MINVALUE
 	NO MAXVALUE
 	CACHE 1;
 
-CREATE SEQUENCE IF NOT EXISTS salas_seq
+CREATE SEQUENCE IF NOT EXISTS matriculas.salas_seq
 	START WITH 1
 	INCREMENT BY 1
 	NO MINVALUE
 	NO MAXVALUE
 	CACHE 1;
 
-CREATE SEQUENCE IF NOT EXISTS usuario_seq
+CREATE SEQUENCE IF NOT EXISTS matriculas.usuarios_seq
 	START WITH 1
 	INCREMENT BY 1
 	NO MINVALUE
 	NO MAXVALUE
 	CACHE 1;
 
-CREATE SEQUENCE IF NOT EXISTS conteudo_curricular_seq
+CREATE SEQUENCE IF NOT EXISTS matriculas.conteudos_curriculares_seq
 	START WITH 1
 	INCREMENT BY 1
 	NO MINVALUE
 	NO MAXVALUE
 	CACHE 1;
 
-CREATE SEQUENCE IF NOT EXISTS planos_curriculares_seq
+CREATE SEQUENCE IF NOT EXISTS matriculas.planos_curriculares_seq
 	START WITH 1
 	INCREMENT BY 1
 	NO MINVALUE
 	NO MAXVALUE
 	CACHE 1;
 
-CREATE SEQUENCE IF NOT EXISTS unidade_curricular_seq
+CREATE SEQUENCE IF NOT EXISTS matriculas.unidades_curriculares_seq
 	START WITH 1
 	INCREMENT BY 1
 	NO MINVALUE
 	NO MAXVALUE
 	CACHE 1;
 
-CREATE SEQUENCE IF NOT EXISTS turmas_seq
+CREATE SEQUENCE IF NOT EXISTS matriculas.turmas_seq
 	START WITH 1
 	INCREMENT BY 1
 	NO MINVALUE
 	NO MAXVALUE
 	CACHE 1;
 
-CREATE SEQUENCE IF NOT EXISTS matriculas_seq
+CREATE SEQUENCE IF NOT EXISTS matriculas.matriculas_seq
 	START WITH 1
 	INCREMENT BY 1
 	NO MINVALUE
 	NO MAXVALUE
 	CACHE 1;
 
-ALTER TABLE campus ALTER COLUMN id SET DEFAULT NEXTVAL('campus_seq');
-ALTER TABLE predios ALTER COLUMN id SET DEFAULT NEXTVAL('predios_seq');
-ALTER TABLE salas ALTER COLUMN id SET DEFAULT NEXTVAL('salas_seq');
-ALTER TABLE usuario ALTER COLUMN id SET DEFAULT NEXTVAL('usuario_seq');
-ALTER TABLE conteudo_curricular ALTER COLUMN id SET DEFAULT NEXTVAL('conteudo_curricular_seq');
-ALTER TABLE planos_curriculares ALTER COLUMN id SET DEFAULT NEXTVAL('planos_curriculares_seq');
-ALTER TABLE unidade_curricular ALTER COLUMN id SET DEFAULT NEXTVAL('unidade_curricular_seq');
-ALTER TABLE turmas ALTER COLUMN id SET DEFAULT NEXTVAL('turmas_seq');
-ALTER TABLE matriculas ALTER COLUMN id SET DEFAULT NEXTVAL('matriculas_seq');
+ALTER TABLE matriculas.campus ALTER COLUMN id SET DEFAULT NEXTVAL('matriculas.campus_seq');
+ALTER TABLE matriculas.predios ALTER COLUMN id SET DEFAULT NEXTVAL('matriculas.predios_seq');
+ALTER TABLE matriculas.salas ALTER COLUMN id SET DEFAULT NEXTVAL('matriculas.salas_seq');
+ALTER TABLE matriculas.usuarios ALTER COLUMN id SET DEFAULT NEXTVAL('matriculas.usuarios_seq');
+ALTER TABLE matriculas.conteudos_curriculares ALTER COLUMN id SET DEFAULT NEXTVAL('matriculas.conteudos_curriculares_seq');
+ALTER TABLE matriculas.planos_curriculares ALTER COLUMN id SET DEFAULT NEXTVAL('matriculas.planos_curriculares_seq');
+ALTER TABLE matriculas.unidades_curriculares ALTER COLUMN id SET DEFAULT NEXTVAL('matriculas.unidades_curriculares_seq');
+ALTER TABLE matriculas.turmas ALTER COLUMN id SET DEFAULT NEXTVAL('matriculas.turmas_seq');
+ALTER TABLE matriculas.matriculas ALTER COLUMN id SET DEFAULT NEXTVAL('matriculas.matriculas_seq');
 
-ALTER TABLE predios ADD CONSTRAINT fk_campus FOREIGN KEY (id_campus) REFERENCES campus(id);
-ALTER TABLE salas ADD CONSTRAINT fk_predios FOREIGN KEY (id_predio) REFERENCES predios(id);
-ALTER TABLE conteudo_plano_curricular ADD CONSTRAINT fk_conteudo_curricular FOREIGN KEY (id_conteudo_curricular) REFERENCES conteudo_curricular(id);
-ALTER TABLE conteudo_plano_curricular ADD CONSTRAINT fk_plano_curricular FOREIGN KEY (id_plano_curricular) REFERENCES planos_curriculares(id);
-ALTER TABLE unidade_curricular ADD CONSTRAINT fk_plano_curricular FOREIGN KEY (id_plano_curricular) REFERENCES planos_curriculares(id);
-ALTER TABLE turmas ADD CONSTRAINT fk_unidade_curricular FOREIGN KEY (id_unidade_curricular) REFERENCES unidade_curricular(id);
-ALTER TABLE turmas ADD CONSTRAINT fk_professor FOREIGN KEY (id_professor) REFERENCES usuario(id);
-ALTER TABLE sala_turma ADD CONSTRAINT fk_sala FOREIGN KEY (id_sala) REFERENCES salas(id);
-ALTER TABLE sala_turma ADD CONSTRAINT fk_turma FOREIGN KEY (id_turma) REFERENCES turmas(id);
-ALTER TABLE matriculas ADD CONSTRAINT fk_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id);
-ALTER TABLE matriculas ADD CONSTRAINT fk_turma FOREIGN KEY (id_turma) REFERENCES turmas(id);
+ALTER TABLE matriculas.predios ADD CONSTRAINT fk_campus FOREIGN KEY (id_campus) REFERENCES matriculas.campus(id);
+ALTER TABLE matriculas.salas ADD CONSTRAINT fk_predios FOREIGN KEY (id_predio) REFERENCES matriculas.predios(id);
+ALTER TABLE matriculas.conteudo_plano_curricular ADD CONSTRAINT fk_conteudo_curricular FOREIGN KEY (id_conteudo_curricular) REFERENCES matriculas.conteudos_curriculares(id);
+ALTER TABLE matriculas.conteudo_plano_curricular ADD CONSTRAINT fk_plano_curricular FOREIGN KEY (id_plano_curricular) REFERENCES matriculas.planos_curriculares(id);
+ALTER TABLE matriculas.unidades_curriculares ADD CONSTRAINT fk_plano_curricular FOREIGN KEY (id_plano_curricular) REFERENCES matriculas.planos_curriculares(id);
+ALTER TABLE matriculas.turmas ADD CONSTRAINT fk_unidade_curricular FOREIGN KEY (id_unidade_curricular) REFERENCES matriculas.unidades_curriculares(id);
+ALTER TABLE matriculas.turmas ADD CONSTRAINT fk_professor FOREIGN KEY (id_professor) REFERENCES matriculas.usuarios(id);
+ALTER TABLE matriculas.sala_turma ADD CONSTRAINT fk_sala FOREIGN KEY (id_sala) REFERENCES matriculas.salas(id);
+ALTER TABLE matriculas.sala_turma ADD CONSTRAINT fk_turma FOREIGN KEY (id_turma) REFERENCES matriculas.turmas(id);
+ALTER TABLE matriculas.matriculas ADD CONSTRAINT fk_usuario FOREIGN KEY (id_usuario) REFERENCES matriculas.usuarios(id);
+ALTER TABLE matriculas.matriculas ADD CONSTRAINT fk_turma FOREIGN KEY (id_turma) REFERENCES matriculas.turmas(id);
 
-CREATE UNIQUE INDEX IF NOT EXISTS idx_conteudo_curricular_01 ON conteudo_curricular (titulo, descricao);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_conteudo_curricular_01 ON matriculas.conteudos_curriculares (titulo, descricao);
 
-CREATE OR REPLACE FUNCTION tf_valida_professor () RETURNS trigger AS
+CREATE OR REPLACE FUNCTION matriculas.tf_valida_professor () RETURNS trigger AS
 $$
 	DECLARE
 		professor RECORD;
 	BEGIN
-		SELECT * FROM usuario WHERE id = NEW.id_professor AND is_professor = TRUE INTO professor;
+		SELECT * FROM usuarios WHERE id = NEW.id_professor AND is_professor = TRUE INTO professor;
 
 		IF professor.id IS NULL THEN
 			RAISE EXCEPTION 'Usuário informado não é um professor';
@@ -190,5 +192,5 @@ $$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER t_valida_professor
-	BEFORE INSERT ON turmas
-	FOR EACH ROW EXECUTE PROCEDURE tf_valida_professor();
+	BEFORE INSERT ON matriculas.turmas
+	FOR EACH ROW EXECUTE PROCEDURE matriculas.tf_valida_professor();
