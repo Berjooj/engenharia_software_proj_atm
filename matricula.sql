@@ -173,6 +173,17 @@ ALTER TABLE matriculas.sala_turma ADD CONSTRAINT fk_turma FOREIGN KEY (id_turma)
 ALTER TABLE matriculas.matriculas ADD CONSTRAINT fk_usuario FOREIGN KEY (id_usuario) REFERENCES matriculas.usuarios(id);
 ALTER TABLE matriculas.matriculas ADD CONSTRAINT fk_turma FOREIGN KEY (id_turma) REFERENCES matriculas.turmas(id);
 
+ALTER TABLE matriculas.campus ADD CONSTRAINT pk_campus PRIMARY KEY (id);
+ALTER TABLE matriculas.predios ADD CONSTRAINT pk_predios PRIMARY KEY (id);
+ALTER TABLE matriculas.salas ADD CONSTRAINT pk_salas PRIMARY KEY (id);
+ALTER TABLE matriculas.usuarios ADD CONSTRAINT pk_usuarios PRIMARY KEY (id);
+ALTER TABLE matriculas.conteudos_curriculares ADD CONSTRAINT pk_conteudos_curriculares PRIMARY KEY (id);
+ALTER TABLE matriculas.planos_curriculares ADD CONSTRAINT pk_planos_curriculares PRIMARY KEY (id);
+ALTER TABLE matriculas.unidades_curriculares ADD CONSTRAINT pk_unidades_curriculares PRIMARY KEY (id);
+ALTER TABLE matriculas.turmas ADD CONSTRAINT pk_turmas PRIMARY KEY (id);
+ALTER TABLE matriculas.sala_turma ADD CONSTRAINT pk_sala_turma PRIMARY KEY (id_sala, id_turma);
+ALTER TABLE matriculas.matriculas ADD CONSTRAINT pk_matriculas PRIMARY KEY (id);
+
 CREATE UNIQUE INDEX IF NOT EXISTS idx_conteudo_curricular_01 ON matriculas.conteudos_curriculares (titulo, descricao);
 
 CREATE OR REPLACE FUNCTION matriculas.tf_valida_professor () RETURNS trigger AS
